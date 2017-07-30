@@ -3,7 +3,7 @@
  * License: MIT
  */
 
-import { Server, Room } from "../colyseus";
+import { Server, Room, Client } from "../colyseus";
 
 export interface IMonitorOptions {
     server: Server;
@@ -22,6 +22,7 @@ export class Monitor {
         setInterval(() => {
             console.log("Registered rooms " + this.getRegisteredRoomsCount())
             console.log("Created rooms " + this.getCreatedRoomsCount())
+            console.log("Connected clients " + this.getConnectedClientsCount())
         }, this.UPDATE_INTERVAL)
     }
 
@@ -39,5 +40,20 @@ export class Monitor {
 
     getCreatedRooms(): { [name: number]: Room<any> } {
         return this.server.matchMaker.roomsById;
+    }
+
+    getConnectedClientsCount(): number {
+        return this.getConnectedClients().length;
+    }
+
+    getConnectedClients(): Client[] {
+        let rooms = this.getCreatedRooms();
+        let clients = [];
+
+        Object.keys(rooms).forEach(key => {
+            let room: Room<any> = rooms[key];
+            clients = clients.concat(room.clients)
+        });
+        return clients;
     }
 }
