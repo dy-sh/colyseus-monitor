@@ -14,7 +14,7 @@ export interface IMonitorOptions {
 export interface IRoomInfo {
     roomId?: number;
     roomName?: string;
-    clients?: Client[];
+    clients?: string[];
     options?: any;
     state?: any;
 }
@@ -43,12 +43,12 @@ export class Monitor {
             });
         });
 
-        this.router.get('/registered_rooms', (req, res) => {
+        this.router.get('/registered_room', (req, res) => {
             var rooms = this.getRegisteredRooms();
             res.json(Object.keys(rooms));
         });
 
-        this.router.get('/rooms', (req, res) => {
+        this.router.get('/room', (req, res) => {
             res.json(this.getCreatedRoomsInfo(req.query.state));
         });
 
@@ -64,7 +64,7 @@ export class Monitor {
             res.json(room.state);
         });
 
-        this.router.get('/clients', (req, res) => {
+        this.router.get('/client', (req, res) => {
             res.json(this.getConnectedClients());
         });
 
@@ -121,7 +121,7 @@ export class Monitor {
             options: room.options,
             roomName: room.roomName,
             // state: room.state,   
-            clients: room.clients
+            clients: room.clients.map(c => { return c.id })
         };
 
         if (includeState)
@@ -134,13 +134,20 @@ export class Monitor {
         return this.getConnectedClients().length;
     }
 
-    getConnectedClients(): Client[] {
+    getConnectedClients(): IClientInfo[] {
         let rooms = this.getCreatedRooms();
-        let clients = [];
+        let clients: IClientInfo[] = [];
 
         Object.keys(rooms).forEach(key => {
             let room: Room<any> = rooms[key];
-            clients = clients.concat(room.clients)
+            room.clients.forEach(c => {
+                let info: IClientInfo = {
+                    id: c.id,
+                    roomId: room.roomId,
+                    roomName: room.roomName
+                }
+                clients.push(info)
+            })
         });
         return clients;
     }
