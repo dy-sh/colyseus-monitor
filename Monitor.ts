@@ -49,11 +49,19 @@ export class Monitor {
         });
 
         this.router.get('/rooms', (req, res) => {
-            res.json(this.getCreatedRoomsInfo());
+            res.json(this.getCreatedRoomsInfo(req.query.state));
         });
 
         this.router.get('/room/:id', (req, res) => {
-            res.json(this.getCreatedRoomInfo(req.params.id));
+            var room = this.getCreatedRoomInfo(req.params.id, req.query.state);
+            if (!room) res.status(404).json(null);
+            res.json(room);
+        });
+
+        this.router.get('/room/state/:id', (req, res) => {
+            var room = this.getCreatedRoom(req.params.id);
+            if (!room) res.status(404).json(null);
+            res.json(room.state);
         });
 
         this.router.get('/clients', (req, res) => {
@@ -91,18 +99,18 @@ export class Monitor {
         return this.server.matchMaker.roomsById[roomId];
     }
 
-    getCreatedRoomsInfo(): { [name: number]: Room<any> } {
+    getCreatedRoomsInfo(includeState = false): { [name: number]: Room<any> } {
         let rooms = this.getCreatedRooms();
         let infos = [];
 
         Object.keys(rooms).forEach(key => {
-            infos.push(this.getCreatedRoomInfo(+key));
+            infos.push(this.getCreatedRoomInfo(+key, includeState));
         });
 
         return infos;
     }
 
-    getCreatedRoomInfo(roomId: number): IRoomInfo {
+    getCreatedRoomInfo(roomId: number, includeState = false): IRoomInfo {
         let room = this.getCreatedRoom(roomId);
 
         if (!room)
@@ -112,9 +120,13 @@ export class Monitor {
             roomId: room.roomId,
             options: room.options,
             roomName: room.roomName,
-            state: room.state,
+            // state: room.state,   
             clients: room.clients
         };
+
+        if (includeState)
+            info.state = room.state;
+
         return info;
     }
 
