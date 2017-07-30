@@ -3,7 +3,7 @@
  * License: MIT
  */
 
-import { Server } from "../colyseus";
+import { Server, Room } from "../colyseus";
 
 export interface IMonitorOptions {
     server: Server;
@@ -11,7 +11,7 @@ export interface IMonitorOptions {
 
 export class Monitor {
     protected server: Server;
-    public UPDATE_INTERVAL = 1000;
+    protected UPDATE_INTERVAL = 1000;
 
     constructor(options: IMonitorOptions) {
         this.server = options.server;
@@ -21,10 +21,23 @@ export class Monitor {
     startMonitoring() {
         setInterval(() => {
             console.log("Registered rooms " + this.getRegisteredRoomsCount())
+            console.log("Created rooms " + this.getCreatedRoomsCount())
         }, this.UPDATE_INTERVAL)
     }
 
     getRegisteredRoomsCount(): number {
-        return Object.keys(this.server.matchMaker.handlers).length;
+        return Object.keys(this.getRegisteredRooms()).length;
+    }
+
+    getRegisteredRooms(): { [id: string]: any[] } {
+        return this.server.matchMaker.handlers;
+    }
+
+    getCreatedRoomsCount(): number {
+        return Object.keys(this.getCreatedRooms()).length;
+    }
+
+    getCreatedRooms(): { [name: number]: Room<any> } {
+        return this.server.matchMaker.roomsById;
     }
 }
