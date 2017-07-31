@@ -1,4 +1,4 @@
-This library allows to monitor colyseus server using the REST API or colyseus-cli.
+This library allows to monitor colyseus server using the REST API or [colyseus-cli](https://www.npmjs.com/package/colyseus-cli).
 
 All requests are available on route /monitor.  For example, to get the state of a room id 0, 
 make a GET request to http://localhost:2657/monitor/room/state/0
@@ -9,8 +9,8 @@ make a GET request to http://localhost:2657/monitor/room/state/0
 
 import * as express from 'express';  
 import * as http from 'http';  
-import { Server } from './colyseus';  
-import { Monitor } from './colyseus-monitor';  
+import { Server } from 'colyseus';  
+import { Monitor } from 'colyseus-monitor';  
 
 // Require ChatRoom handler  
 import { GameRoom } from "./rooms/gameRoom";  
