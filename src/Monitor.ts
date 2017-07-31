@@ -3,12 +3,13 @@
  * License: MIT
  */
 
-import { Server, Room, Client } from "../colyseus";
+// import { Server, Room, Client } from "../../colyseus";
 import * as express from 'express';
 
 
 export interface IMonitorOptions {
-    server: Server;
+    server: any;
+    // server: Server;
     express: any;
 }
 export interface IRoomInfo {
@@ -26,7 +27,8 @@ export interface IClientInfo {
 }
 
 export class Monitor {
-    protected server: Server;
+    // protected server: Server;
+    protected server: any;
     protected UPDATE_INTERVAL = 1000;
     protected router = express.Router();
 
@@ -68,16 +70,16 @@ export class Monitor {
             res.json(this.getConnectedClients());
         });
 
-        this.startMonitoring();
+        // this.startMonitoring();
     }
 
-    startMonitoring() {
-        setInterval(() => {
-            console.log("Registered rooms " + this.getRegisteredRoomsCount())
-            console.log("Created rooms " + this.getCreatedRoomsCount())
-            console.log("Connected clients " + this.getConnectedClientsCount())
-        }, this.UPDATE_INTERVAL)
-    }
+    // startMonitoring() {
+    //     setInterval(() => {
+    //         console.log("Registered rooms " + this.getRegisteredRoomsCount())
+    //         console.log("Created rooms " + this.getCreatedRoomsCount())
+    //         console.log("Connected clients " + this.getConnectedClientsCount())
+    //     }, this.UPDATE_INTERVAL)
+    // }
 
     getRegisteredRoomsCount(): number {
         return Object.keys(this.getRegisteredRooms()).length;
@@ -91,15 +93,15 @@ export class Monitor {
         return Object.keys(this.getCreatedRooms()).length;
     }
 
-    getCreatedRooms(): { [name: number]: Room<any> } {
+    getCreatedRooms(): { [name: number]: any } {
         return this.server.matchMaker.roomsById;
     }
 
-    getCreatedRoom(roomId: number): Room<any> {
+    getCreatedRoom(roomId: number): any {
         return this.server.matchMaker.roomsById[roomId];
     }
 
-    getCreatedRoomsInfo(includeState = false): { [name: number]: Room<any> } {
+    getCreatedRoomsInfo(includeState = false): { [name: number]: any } {
         let rooms = this.getCreatedRooms();
         let infos = [];
 
@@ -139,7 +141,7 @@ export class Monitor {
         let clients: IClientInfo[] = [];
 
         Object.keys(rooms).forEach(key => {
-            let room: Room<any> = rooms[key];
+            let room: any = rooms[key];
             room.clients.forEach(c => {
                 let info: IClientInfo = {
                     id: c.id,

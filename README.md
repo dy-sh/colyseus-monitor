@@ -1,4 +1,4 @@
-This module allows to monitor statistics from the colyseus server using the REST API.
+This library allows to monitor colyseus server using the REST API or colyseus-cli.
 
 All requests are available on route /monitor.  For example, to get the state of a room id 0, 
 make a GET request to http://localhost:2657/monitor/room/state/0

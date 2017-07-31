@@ -1,0 +1,31 @@
+{
+  "name": "colyseus-monitor",
+  "version": "0.4.0",
+  "description": "This library allows to monitor colyseus server using the REST API or colyseus-cli",
+  "main": "./lib/index.js",
+  "typings": "./lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/derwish-pro/colyseus-monitor.git"
+  },
+  "keywords": [
+    "colyseus",
+    "monitoring",
+    "cli",
+    "command-line"
+  ],
+  "scripts": {
+    "start": "node lib/index.js",
+    "prepublish": "tsc -d",
+    "watch": "tsc -d -w",
+    "build": "tsc",
+    "check-updates": "ncu -u"
+  },
+  "author": "Derwish (derwish.pro@gmail.com)",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^3.5.0",
+    "typescript": "^2.1.4"
+  }
+}
