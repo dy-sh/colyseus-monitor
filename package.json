@@ -6,7 +6,7 @@
   "typings": "./lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "git://github.com/derwish-pro/colyseus-monitor.git"
+    "url": "git://github.com/dy-sh/colyseus-monitor.git"
   },
   "keywords": [
     "colyseus",
@@ -21,7 +21,7 @@
     "build": "tsc",
     "check-updates": "ncu -u"
   },
-  "author": "Derwish (derwish.pro@gmail.com)",
+  "author": "Dmitry Savosh (d.savosh@gmail.com)",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
